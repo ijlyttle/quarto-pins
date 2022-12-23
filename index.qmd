@@ -32,3 +32,18 @@ For each board, write a manifest:
 board_one |> write_board_manifest()
 board_two |> write_board_manifest()
 ```
+
+## Quarto question
+
+
+## Using url-board
+
+This will tell us about a previous version of the pin:
+
+```{r}
+board <- board_url("https://ijlyttle.github.io/quarto-pins/data/board_two/")
+
+board |> pin_list()
+board |> pin_versions("mtcars")
+board |> pin_read("mtcars") |> head()
+```

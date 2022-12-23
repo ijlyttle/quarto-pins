@@ -18,6 +18,6 @@
     "href": "index.html#using-url-board",
     "title": "quarto-pins",
     "section": "Using url-board",
-    "text": "Using url-board"
+    "text": "Using url-board\nThis will tell us about a previous version of the pin:\n\nboard <- board_url(\"https://ijlyttle.github.io/quarto-pins/data/board_two/\")\n\nboard |> pin_list()\n\n[1] \"mtcars\"\n\nboard |> pin_versions(\"mtcars\")\n\n# A tibble: 1 × 3\n  version                created             hash \n  <chr>                  <dttm>              <chr>\n1 20221223T025829Z-c2702 2022-12-23 02:58:29 c2702\n\nboard |> pin_read(\"mtcars\") |> head()\n\n                   mpg cyl disp  hp drat    wt  qsec vs am gear carb\nMazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4\nMazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4\nDatsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1\nHornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1\nHornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2\nValiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1"
   }
 ]

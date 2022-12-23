@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.280">
+<meta name="generator" content="quarto-1.3.56">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -166,7 +166,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"pins"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"here"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>here() starts at /Users/ijlyttle/repos/public/twiddle/quarto-pins</code></pre>
+<pre><code>here() starts at /home/runner/work/quarto-pins/quarto-pins</code></pre>
 </div>
 </div>
 <p>To try to answer a question about Quarto, I am going to create two boards; normally, I would just create one.</p>
@@ -178,14 +178,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>board_one <span class="sc">|&gt;</span> <span class="fu">pin_write</span>(mtcars, <span class="st">"mtcars"</span>, <span class="at">type =</span> <span class="st">"json"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Replacing version '20221223T025550Z-c2702' with '20221223T025829Z-c2702'
+<pre><code>Creating new version '20221223T033108Z-c2702'
 Writing to pin 'mtcars'</code></pre>
 </div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>board_two <span class="sc">|&gt;</span> <span class="fu">pin_write</span>(mtcars, <span class="st">"mtcars"</span>, <span class="at">type =</span> <span class="st">"json"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Replacing version '20221223T025550Z-c2702' with '20221223T025829Z-c2702'
+<pre><code>Creating new version '20221223T033109Z-c2702'
 Writing to pin 'mtcars'</code></pre>
 </div>
 </div>
@@ -205,6 +205,32 @@ Writing to pin 'mtcars'</code></pre>
 </section>
 <section id="using-url-board" class="level2">
 <h2 class="anchored" data-anchor-id="using-url-board">Using url-board</h2>
+<p>This will tell us about a previous version of the pin:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>board <span class="ot">&lt;-</span> <span class="fu">board_url</span>(<span class="st">"https://ijlyttle.github.io/quarto-pins/data/board_two/"</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>board <span class="sc">|&gt;</span> <span class="fu">pin_list</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "mtcars"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>board <span class="sc">|&gt;</span> <span class="fu">pin_versions</span>(<span class="st">"mtcars"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  version                created             hash 
+  &lt;chr&gt;                  &lt;dttm&gt;              &lt;chr&gt;
+1 20221223T025829Z-c2702 2022-12-23 02:58:29 c2702</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>board <span class="sc">|&gt;</span> <span class="fu">pin_read</span>(<span class="st">"mtcars"</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   mpg cyl disp  hp drat    wt  qsec vs am gear carb
+Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+Datsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
+Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
+Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1</code></pre>
+</div>
+</div>
 
 
 </section>

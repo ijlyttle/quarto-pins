@@ -1,0 +1,1 @@
+Sitemap: https://ijlyttle.github.io/quarto-pins/sitemap.xml

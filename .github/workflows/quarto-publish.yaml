@@ -21,8 +21,8 @@ jobs:
         with:
           use-public-rspm: true
 
-        name: Set up renv
-      - uses: r-lib/actions/setup-renv@v2
+      - name: Set up renv
+        uses: r-lib/actions/setup-renv@v2
 
       - name: Publish to GitHub Pages (and render)
         uses: quarto-dev/quarto-actions/publish@v2

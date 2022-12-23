@@ -1,0 +1,23 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "quarto-pins",
+    "section": "",
+    "text": "The goal of this repo is to show how to publish a web-based pins board using Quarto.\nTo try to answer a question about Quarto, I am going to create two boards; normally, I would just create one.\nFor each board, write a pin:\nFor each board, write a manifest:"
+  },
+  {
+    "objectID": "index.html#quarto-question",
+    "href": "index.html#quarto-question",
+    "title": "quarto-pins",
+    "section": "Quarto question",
+    "text": "Quarto question"
+  },
+  {
+    "objectID": "index.html#using-url-board",
+    "href": "index.html#using-url-board",
+    "title": "quarto-pins",
+    "section": "Using url-board",
+    "text": "Using url-board"
+  }
+]

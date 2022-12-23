@@ -1,5 +1,14 @@
 project:
-  title: "quarto-pins"
+  type: website
+  resources:
+    - data/board_one
 
+resources:
+  - data/board_two
 
+website:
+  title: "Pins test"
 
+format:
+  html:
+    toc: true

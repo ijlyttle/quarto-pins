@@ -1,5 +1,0 @@
----
-title: "quarto-pins"
----
-
-The goal of this repo is to show how to publish a web-based pins board using Quarto.

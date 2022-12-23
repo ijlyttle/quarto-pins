@@ -1,0 +1,34 @@
+---
+title: "quarto-pins"
+---
+
+The goal of this repo is to show how to publish a web-based pins board using Quarto.
+
+```{r}
+library("pins")
+library("here")
+```
+
+To try to answer a question about Quarto, I am going to create two boards; normally, I would just create one.
+
+```{r}
+board_one <- board_folder(here("data/board_one"), versioned = FALSE)
+board_two <- board_folder(here("data/board_two"), versioned = FALSE)
+```
+
+For each board, write a pin:
+
+```{r}
+board_one |> pin_write(mtcars, "mtcars", type = "json")
+```
+
+```{r}
+board_two |> pin_write(mtcars, "mtcars", type = "json")
+```
+
+For each board, write a manifest:
+
+```{r}
+board_one |> write_board_manifest()
+board_two |> write_board_manifest()
+```

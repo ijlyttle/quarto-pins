@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2022-12-24">
 
-<title>Pins test - quarto-pins</title>
+<title>Pins with Quarto</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -124,29 +125,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </head>
 
-<body>
+<body class="fullcontent">
 
 <div id="quarto-search-results"></div>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#quarto-question" id="toc-quarto-question" class="nav-link active" data-scroll-target="#quarto-question">Quarto question</a></li>
-  <li><a href="#using-url-board" id="toc-using-url-board" class="nav-link" data-scroll-target="#using-url-board">Using url-board</a></li>
-  </ul>
-</nav>
-    </div>
+    
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">quarto-pins</h1>
+<h1 class="title">Pins with Quarto</h1>
 </div>
 
 
@@ -154,6 +146,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">2022-12-24</p>
+    </div>
+  </div>
   
     
   </div>
@@ -161,66 +159,113 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<p>The goal of this repo is to show how to publish a web-based pins board using Quarto.</p>
+<p>The goals of this document are:</p>
+<ul>
+<li>to show how to publish a web-based <a href="https://pins.rstudio.com/">pins</a> board using Quarto.</li>
+<li>to set up a reprex to ask about best practices for including <code>resources:</code> in a Quarto website.</li>
+</ul>
+<p>This is motivated by <a href="https://github.com/rstudio/pins-r/pull/681">new capabilities to publish web-based boards</a> in (the currently-dev version of) pins.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"pins"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"here"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>here() starts at /home/runner/work/quarto-pins/quarto-pins</code></pre>
 </div>
-</div>
-<p>To try to answer a question about Quarto, I am going to create two boards; normally, I would just create one.</p>
+<p>The idea is:</p>
+<ul>
+<li>create a <code>board_folder()</code>, write a pin to it, then create a manifest.</li>
+<li>specify the folder as a resource to be included with the published site.</li>
+</ul>
+<p>Then, I’ll show some code <em>you</em> can use to access the data.</p>
+<section id="create-board" class="level2">
+<h2 class="anchored" data-anchor-id="create-board">Create board</h2>
+<p>Normally, I would create just one board. However, there’s something I’m not quite understanding about how we are meant to use Quarto’s <code>resources:</code> field, so I’m making an example.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>board_one <span class="ot">&lt;-</span> <span class="fu">board_folder</span>(<span class="fu">here</span>(<span class="st">"data/board_one"</span>), <span class="at">versioned =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>board_two <span class="ot">&lt;-</span> <span class="fu">board_folder</span>(<span class="fu">here</span>(<span class="st">"data/board_two"</span>), <span class="at">versioned =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>board_one <span class="ot">&lt;-</span> <span class="fu">board_folder</span>(<span class="fu">here</span>(<span class="st">"data/board_one"</span>), <span class="at">versioned =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>board_two <span class="ot">&lt;-</span> <span class="fu">board_folder</span>(<span class="fu">here</span>(<span class="st">"data/board_two"</span>), <span class="at">versioned =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>For each board, write a pin:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>board_one <span class="sc">|&gt;</span> <span class="fu">pin_write</span>(mtcars, <span class="st">"mtcars"</span>, <span class="at">type =</span> <span class="st">"json"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>board_one <span class="sc">|&gt;</span> <span class="fu">pin_write</span>(mtcars, <span class="st">"mtcars"</span>, <span class="at">type =</span> <span class="st">"json"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Creating new version '20221223T033108Z-c2702'
+<pre><code>Creating new version '20221224T170417Z-c2702'
 Writing to pin 'mtcars'</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>board_two <span class="sc">|&gt;</span> <span class="fu">pin_write</span>(mtcars, <span class="st">"mtcars"</span>, <span class="at">type =</span> <span class="st">"json"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>board_two <span class="sc">|&gt;</span> <span class="fu">pin_write</span>(mtcars, <span class="st">"mtcars"</span>, <span class="at">type =</span> <span class="st">"json"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Creating new version '20221223T033109Z-c2702'
+<pre><code>Creating new version '20221224T170417Z-c2702'
 Writing to pin 'mtcars'</code></pre>
 </div>
 </div>
 <p>For each board, write a manifest:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>board_one <span class="sc">|&gt;</span> <span class="fu">write_board_manifest</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>board_one <span class="sc">|&gt;</span> <span class="fu">write_board_manifest</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Manifest file written to root folder of board, as `_pins.yaml`</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>board_two <span class="sc">|&gt;</span> <span class="fu">write_board_manifest</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>board_two <span class="sc">|&gt;</span> <span class="fu">write_board_manifest</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Manifest file written to root folder of board, as `_pins.yaml`</code></pre>
 </div>
 </div>
-<section id="quarto-question" class="level2">
-<h2 class="anchored" data-anchor-id="quarto-question">Quarto question</h2>
+<p>A manifest file will let consumers know about the pins and their versions.</p>
+<p>Because the data is published independently from the code, I add <code>/data/</code> to the <code>.gitignore</code> file.</p>
 </section>
-<section id="using-url-board" class="level2">
-<h2 class="anchored" data-anchor-id="using-url-board">Using url-board</h2>
-<p>This will tell us about a previous version of the pin:</p>
+<section id="publish-board" class="level2">
+<h2 class="anchored" data-anchor-id="publish-board">Publish board</h2>
+<p>Here is the <code>_quarto.yml</code> file for this project:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> website</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">resources</span><span class="kw">:</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> data/board_one</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">resources</span><span class="kw">:</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> data/board_two</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>As you can see, I have made a resource entry for each board in different places in the file.</p>
+<p>When I render the file, I get a set of warnings:</p>
+<pre><code>WARNING: File 'data/board_one/mtcars/20221223T162805Z-c2702' was not found.
+WARNING: File 'data/board_one/mtcars/20221223T162805Z-c2702/data.txt' was not found.
+WARNING: File 'data/board_one/mtcars/20221223T162805Z-c2702/mtcars.json' was not found.</code></pre>
+<p>The <code>resources</code> entry for <code>data/board_one</code> results in only the <code>_pins.yaml</code> file being copied to <code>_site</code>, whereas the entire directory structure for <code>data/board_two</code> is copied to <code>_site</code>.</p>
+<p>In the <a href="https://quarto.org/docs/websites/website-tools.html#site-resources">site resources documentation</a>, it encourages us to put <code>resources:</code> within <code>project:</code>.</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Questions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Is <code>resources</code> meant to copy folders recursively?
+<ul>
+<li>if so, what is the right syntax?</li>
+</ul></li>
+<li>I found the top-level <code>resources:</code> by accident. Is it meant to act differently from the version in <code>project:</code>?</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="consume-board" class="level2">
+<h2 class="anchored" data-anchor-id="consume-board">Consume board</h2>
+<p>When you publish your Quarto site, for example to GitHub Pages, the board is available as a part of the website. Anyone can access the data using <code>board_url()</code>, like so:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>board <span class="ot">&lt;-</span> <span class="fu">board_url</span>(<span class="st">"https://ijlyttle.github.io/quarto-pins/data/board_two/"</span>)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>board <span class="sc">|&gt;</span> <span class="fu">pin_list</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>board <span class="ot">&lt;-</span> <span class="fu">board_url</span>(<span class="st">"https://ijlyttle.github.io/quarto-pins/data/board_two/"</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>board <span class="sc">|&gt;</span> <span class="fu">pin_list</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "mtcars"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>board <span class="sc">|&gt;</span> <span class="fu">pin_versions</span>(<span class="st">"mtcars"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>board <span class="sc">|&gt;</span> <span class="fu">pin_versions</span>(<span class="st">"mtcars"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 3
   version                created             hash 
   &lt;chr&gt;                  &lt;dttm&gt;              &lt;chr&gt;
-1 20221223T025829Z-c2702 2022-12-23 02:58:29 c2702</code></pre>
+1 20221223T033109Z-c2702 2022-12-23 03:31:09 c2702</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>board <span class="sc">|&gt;</span> <span class="fu">pin_read</span>(<span class="st">"mtcars"</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>board <span class="sc">|&gt;</span> <span class="fu">pin_read</span>(<span class="st">"mtcars"</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                   mpg cyl disp  hp drat    wt  qsec vs am gear carb
 Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
@@ -231,6 +276,7 @@ Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
 Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1</code></pre>
 </div>
 </div>
+<p>Because the pin above has to be published before it is consumed, we are seeing a previous publication of the pin.</p>
 
 
 </section>

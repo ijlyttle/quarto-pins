@@ -1,15 +1,33 @@
 ---
-title: "quarto-pins"
+title: "Pins with Quarto"
+date: today
+date-format: iso
 ---
 
-The goal of this repo is to show how to publish a web-based pins board using Quarto.
+The goals of this document are:
+
+- to show how to publish a web-based [pins](https://pins.rstudio.com/) board using Quarto.
+- to set up a reprex to ask about best practices for including `resources:` in a Quarto website.
+
+This is motivated by [new capabilities to publish web-based boards](https://github.com/rstudio/pins-r/pull/681) in (the currently-dev version of) pins.
 
 ```{r}
+#| message: false
 library("pins")
 library("here")
 ```
 
-To try to answer a question about Quarto, I am going to create two boards; normally, I would just create one.
+The idea is:
+
+- create a `board_folder()`, write a pin to it, then create a manifest.
+- specify the folder as a resource to be included with the published site.
+
+Then, I'll show some code *you* can use to access the data.
+
+## Create board
+
+Normally, I would create just one board. 
+However, there's something I'm not quite understanding about how we are meant to use Quarto's `resources:` field, so I'm making an example.
 
 ```{r}
 board_one <- board_folder(here("data/board_one"), versioned = FALSE)
@@ -33,12 +51,46 @@ board_one |> write_board_manifest()
 board_two |> write_board_manifest()
 ```
 
-## Quarto question
+A manifest file will let consumers know about the pins and their versions.
 
+Because the data is published independently from the code, I add `/data/` to the `.gitignore` file.
 
-## Using url-board
+## Publish board
 
-This will tell us about a previous version of the pin:
+Here is the `_quarto.yml` file for this project:
+
+```yaml
+`r paste(readLines(here("_quarto.yml")), collapse = "\n")`
+```
+
+As you can see, I have made a resource entry for each board in different places in the file.
+
+When I render the file, I get a set of warnings:
+
+```
+WARNING: File 'data/board_one/mtcars/20221223T162805Z-c2702' was not found.
+WARNING: File 'data/board_one/mtcars/20221223T162805Z-c2702/data.txt' was not found.
+WARNING: File 'data/board_one/mtcars/20221223T162805Z-c2702/mtcars.json' was not found.
+```
+
+The `resources` entry for `data/board_one` results in only the `_pins.yaml` file being copied to `_site`, whereas the entire directory structure for `data/board_two` is copied to `_site`.
+
+In the [site resources documentation](https://quarto.org/docs/websites/website-tools.html#site-resources), it encourages us to put `resources:` within `project:`.
+
+::: {.callout-note}
+## Questions
+
+- Is `resources` meant to copy folders recursively?
+  - if so, what is the right syntax?
+  
+- I found the top-level `resources:` by accident.
+  Is it meant to act differently from the version in `project:`?
+:::
+
+## Consume board
+
+When you publish your Quarto site, for example to GitHub Pages, the board is available as a part of the website.
+Anyone can access the data using `board_url()`, like so:
 
 ```{r}
 board <- board_url("https://ijlyttle.github.io/quarto-pins/data/board_two/")
@@ -47,3 +99,5 @@ board |> pin_list()
 board |> pin_versions("mtcars")
 board |> pin_read("mtcars") |> head()
 ```
+
+Because the pin above has to be published before it is consumed, we are seeing a previous publication of the pin.

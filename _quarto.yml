@@ -1,8 +1,8 @@
 project:
   type: website
   resources:
-    - data/board_one
+    - data/board_one/
 
 resources:
-  - data/board_two
+  - data/board_two/
 

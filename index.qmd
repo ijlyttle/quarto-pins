@@ -4,6 +4,8 @@ date: today
 date-format: iso
 ---
 
+This document was rendered using Quarto `r system("quarto -v", intern = TRUE)`.
+
 The goals of this document are:
 
 - to show how to publish a web-based [pins](https://pins.rstudio.com/) board using Quarto.
